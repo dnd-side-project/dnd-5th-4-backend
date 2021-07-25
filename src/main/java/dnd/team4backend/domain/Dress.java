@@ -41,4 +41,9 @@ public class Dress {
     public List<MeasureDress> getMeasureDressList() {
         return measureDressList;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+        user.getDressList().add(this);
+    }
 }
