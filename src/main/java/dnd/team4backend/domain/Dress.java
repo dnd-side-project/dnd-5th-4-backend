@@ -19,8 +19,6 @@ public class Dress {
     @Enumerated(EnumType.STRING)
     private DressType dressType; // TOP, BOTTOM, OUTER, SHOES, ETC
 
-    @OneToMany(mappedBy = "dress")
-    private List<MeasureDress> measureDressList;
 
     public Long getId() {
         return id;
