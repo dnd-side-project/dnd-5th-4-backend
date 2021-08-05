@@ -86,6 +86,8 @@ public class MeasureController {
         List<Measure> measureList = measureService.findByWeather(user, weatherUserForm.getTemperatureHigh(), weatherUserForm.getTemperatureLow(), weatherUserForm.getHumidity());
 
         JsonObject obj = new JsonObject();
+        obj.addProperty("status", 200);
+        obj.addProperty("msg", "입력하신 날씨와 유사한 유저의 평가들을 조회하였습니다.");
         obj.addProperty("userId", weatherUserForm.getUserId());
         obj.addProperty("temperatureHigh", weatherUserForm.getTemperatureHigh());
         obj.addProperty("temperatureLow", weatherUserForm.getTemperatureLow());
