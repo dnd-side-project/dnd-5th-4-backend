@@ -92,4 +92,9 @@ public class MeasureService {
 
     }
 
+    @Transactional
+    public List<Measure> findByWeather(User user, Float temperatureHigh, Float temperatureLow, Float humidity) {
+        return measureRepository.findByWeather(user, temperatureHigh, temperatureLow, humidity);
+    }
+
 }
