@@ -139,4 +139,9 @@ public class MeasureService {
         List<Measure> measures = measureRepository.findByUserAndDateBetween(user, fromDateTime, toDateTime);
         return MeasureCalendarAssembler.toDtos(measures);
     }
+
+    public MeasureResponse findOne(Long measureId) {
+        Measure measure = measureRepository.getById(measureId);
+        return MeasureAssembler.toDto(measure);
+    }
 }

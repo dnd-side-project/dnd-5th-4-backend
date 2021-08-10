@@ -3,6 +3,7 @@ package dnd.team4backend.service;
 import dnd.team4backend.domain.*;
 import dnd.team4backend.domain.vo.DressVO;
 import dnd.team4backend.domain.vo.MeasureCalendarResponse;
+import dnd.team4backend.domain.vo.MeasureResponse;
 import dnd.team4backend.domain.vo.MeasureVO;
 import dnd.team4backend.repository.MeasureRepository;
 import dnd.team4backend.service.assembler.MeasureCalendarAssembler;
@@ -225,5 +226,36 @@ class MeasureServiceTest {
         // then
         Assertions.assertEquals(measureCalendarResponses.get(0).getMeasureId(), findMeasureCalendarResponses.get(0).getMeasureId());
         Assertions.assertEquals(measureCalendarResponses.get(1).getMeasureId(), findMeasureCalendarResponses.get(1).getMeasureId());
+    }
+
+    @Test
+    public void 평가ID조회_테스트() {
+        // given
+        User user = new User();
+        user.addBasicInfo("aaa", "hh", Gender.M, Constitution.HOT);
+
+        em.persist(user);
+
+        DressVO d1 = new DressVO(null, user.getId(), "회색 가디건", DressType.OUTER, Mood.GOOD);
+        DressVO d2 = new DressVO(null, user.getId(), "검은색 무지티", DressType.TOP, Mood.VERYHOT);
+        DressVO d3 = new DressVO(null, user.getId(), "연청바지", DressType.BOTTOM, Mood.COLD);
+        DressVO d4 = new DressVO(null, user.getId(), "나이키 조던", DressType.SHOES, Mood.GOOD);
+
+        List<DressVO> dressVOList = new ArrayList<>();
+        dressVOList.add(d1);
+        dressVOList.add(d2);
+        dressVOList.add(d3);
+        dressVOList.add(d4);
+
+        MeasureVO measureVO1 = new MeasureVO();
+        measureVO1.createMeasureVO(LocalDateTime.of(2021, 8, 3, 15, 10), "구름 많음", 31.5F,
+                24.3F, 15F, "서울", Mood.GOOD, "날씨에 맞게 옷을 잘 입은듯하다.");
+        Long measureId1 = measureService.measure(user.getId(), dressVOList, measureVO1);
+
+        // when
+        MeasureResponse findMeasureResponse = measureService.findOne(measureId1);
+
+        // then
+        Assertions.assertEquals(measureId1, findMeasureResponse.getMeasureId());
     }
 }
