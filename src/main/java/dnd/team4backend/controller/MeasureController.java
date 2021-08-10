@@ -218,4 +218,21 @@ public class MeasureController {
         }
     }
 
+    @GetMapping(value = "measure/{id}")
+    public ResponseEntity getMeasureById(@PathVariable("id") Long measureId) {
+        try {
+            MeasureResponse measureResponse = measureService.findOne(measureId);
+            List<MeasureResponse> measureResponseList = new ArrayList<>();
+            measureResponseList.add(measureResponse);
+            MeasureResponseEntity responseEntity = new MeasureResponseEntity(
+                    200, "해당 measure ID를 가진 평가를 조회하였습니다.",
+                    measureResponseList
+            );
+            return new ResponseEntity(responseEntity, HttpStatus.OK);
+        } catch (IllegalStateException e){
+            BasicResponseEntity responseEntity = new BasicResponseEntity(400, "평가 조회 중 오류가 발생했습니다.");
+            return new ResponseEntity(responseEntity, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
