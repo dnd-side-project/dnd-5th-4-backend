@@ -144,4 +144,13 @@ public class MeasureService {
         Measure measure = measureRepository.getById(measureId);
         return MeasureAssembler.toDto(measure);
     }
+
+    public void validateMeasureByDate(User user, LocalDateTime date) {
+        LocalDateTime fromLocalDateTime = LocalDateTime.of(date.toLocalDate(), LocalTime.MIN);
+        LocalDateTime toLocalDateTime = LocalDateTime.of(date.toLocalDate(), LocalTime.MAX);
+        List<Measure> measureList = measureRepository.findByUserAndDateBetween(user, fromLocalDateTime, toLocalDateTime);
+        if (measureList.size() >= 1) {
+            throw new IllegalStateException("해당 날짜에 이미 평가가 존재합니다");
+        }
+    }
 }

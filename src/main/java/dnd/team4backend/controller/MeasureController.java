@@ -46,25 +46,26 @@ public class MeasureController {
         User user = userRepository.findOne(userId);
 
         LocalDateTime date = measureForm.getDate();
-        Float temperatureHigh = measureForm.getTemperatureHigh();
-        Float temperatureLow = measureForm.getTemperatureLow();
-        Float humidity = measureForm.getHumidity();
-        String area = measureForm.getArea();
-        String tempInfo = measureForm.getTempInfo();
-        List<MeasureDressForm> dresses = measureForm.getDresses();
-        Mood mood = measureForm.getMood();
-        String comment = measureForm.getComment();
-
-        List<DressVO> dressVOList = new ArrayList<>();
-        for (MeasureDressForm mdf : dresses) {
-            DressVO dressVO = new DressVO(mdf.getId(), mdf.getUserId(), mdf.getName(), mdf.getType(), mdf.getPartialMood());
-            dressVOList.add(dressVO);
-        }
-
-        MeasureVO measureVO = new MeasureVO();
-        measureVO.createMeasureVO(date, tempInfo, temperatureHigh, temperatureLow, humidity, area, mood, comment);
-
         try {
+            measureService.validateMeasureByDate(user, date);
+            Float temperatureHigh = measureForm.getTemperatureHigh();
+            Float temperatureLow = measureForm.getTemperatureLow();
+            Float humidity = measureForm.getHumidity();
+            String area = measureForm.getArea();
+            String tempInfo = measureForm.getTempInfo();
+            List<MeasureDressForm> dresses = measureForm.getDresses();
+            Mood mood = measureForm.getMood();
+            String comment = measureForm.getComment();
+
+            List<DressVO> dressVOList = new ArrayList<>();
+            for (MeasureDressForm mdf : dresses) {
+                DressVO dressVO = new DressVO(mdf.getId(), mdf.getUserId(), mdf.getName(), mdf.getType(), mdf.getPartialMood());
+                dressVOList.add(dressVO);
+            }
+
+            MeasureVO measureVO = new MeasureVO();
+            measureVO.createMeasureVO(date, tempInfo, temperatureHigh, temperatureLow, humidity, area, mood, comment);
+
             measureService.measure(user.getId(), dressVOList, measureVO);
             JsonObject obj = new JsonObject();
             obj.addProperty("status", 200);
